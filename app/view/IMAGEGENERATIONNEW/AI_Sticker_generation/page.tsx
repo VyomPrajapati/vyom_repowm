@@ -6,7 +6,6 @@ import InputSection from "./componennts/InputSection"
 import SettingsPanel from "./componennts/SettingsPanel"
 // import BackgroundShapes from "./componennts/BackgroundShapes"
 import Particles from './componennts/Particles';
-import Image from 'next/image'
 import NavigationFull from "../../Core/NavigationFull"
 import Footer from "../../Core/Footer"
 

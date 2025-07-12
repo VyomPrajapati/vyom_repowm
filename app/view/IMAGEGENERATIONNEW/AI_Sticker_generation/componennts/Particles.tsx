@@ -153,8 +153,8 @@ const Particles: React.FC<ParticlesProps> = ({
     // For iOS 13+ permission
     const requestDeviceOrientationPermission = () => {
       if (typeof DeviceOrientationEvent !== 'undefined' &&
-          typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        (DeviceOrientationEvent as any).requestPermission()
+          typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === 'function') {
+        (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission()
           .then((permission: string) => {
             if (permission === 'granted') {
               window.addEventListener('deviceorientation', handleDeviceOrientation, true);
@@ -163,9 +163,9 @@ const Particles: React.FC<ParticlesProps> = ({
               // alert('Device orientation permission denied.');
             }
           })
-          .catch((err: any) => {
+          .catch((err: Error) => {
             // Gracefully ignore AbortError and other errors
-            if (err && err.code === 20) {
+            if (err && (err as { code?: number }).code === 20) {
               // AbortError: The operation was aborted.
               // Optionally: show a message to the user
             }
@@ -178,7 +178,7 @@ const Particles: React.FC<ParticlesProps> = ({
 
     if (isMobile) {
       if (typeof DeviceOrientationEvent !== 'undefined' &&
-          typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+          typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === 'function') {
         container.addEventListener('click', requestDeviceOrientationPermission, { once: true });
       } else {
         window.addEventListener('deviceorientation', handleDeviceOrientation, true);
@@ -270,7 +270,7 @@ const Particles: React.FC<ParticlesProps> = ({
       if (isMobile) {
         window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
         if (typeof DeviceOrientationEvent !== 'undefined' &&
-            typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+            typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === 'function') {
           container.removeEventListener('click', requestDeviceOrientationPermission);
         }
       } else if (moveParticlesOnHover) {
@@ -293,6 +293,8 @@ const Particles: React.FC<ParticlesProps> = ({
     cameraDistance,
     disableRotation,
     particleTransparency,
+    isMobile,
+    particleColors,
   ]);
 
   return (

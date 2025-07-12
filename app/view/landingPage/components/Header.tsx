@@ -3,9 +3,9 @@
 import React, { useEffect } from 'react';
 // import Particles from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
-import Button from './Button';
-import SlideImage from './Slideimage';
-import { HeroHighlightDemo } from './Headertext';
+// import Button from './Button';
+// import SlideImage from './Slideimage';
+// import { HeroHighlightDemo } from './Headertext';
 import { initParticlesEngine } from "@tsparticles/react";
 
 
