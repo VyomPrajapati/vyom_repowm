@@ -1296,6 +1296,45 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
   }), [effectOptions]);
   const hyperspeed = useRef<HTMLDivElement>(null);
   const appRef = useRef<App | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Play sound on mousedown, pause/reset on mouseup
+  useEffect(() => {
+    const container = hyperspeed.current;
+    if (!container) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleDown = () => {
+      audio.currentTime = 0;
+      audio.volume = 1;
+      audio.play();
+    };
+    const handleUp = () => {
+      // Fade out for cool effect
+      const fade = setInterval(() => {
+        if (audio.volume > 0.05) {
+          audio.volume -= 0.05;
+        } else {
+          audio.pause();
+          audio.currentTime = 0;
+          clearInterval(fade);
+        }
+      }, 30);
+    };
+    container.addEventListener('mousedown', handleDown);
+    container.addEventListener('touchstart', handleDown);
+    container.addEventListener('mouseup', handleUp);
+    container.addEventListener('mouseleave', handleUp);
+    container.addEventListener('touchend', handleUp);
+    return () => {
+      container.removeEventListener('mousedown', handleDown);
+      container.removeEventListener('touchstart', handleDown);
+      container.removeEventListener('mouseup', handleUp);
+      container.removeEventListener('mouseleave', handleUp);
+      container.removeEventListener('touchend', handleUp);
+    };
+  }, []);
 
   useEffect(() => {
     if (appRef.current) {
@@ -1328,11 +1367,14 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
   }, [mergedOptions]);
 
   return (
-    <div
-      id="lights"
-      className="absolute inset-0 w-full h-full cursor-pointer"
-      ref={hyperspeed}
-    ></div>
+    <>
+      <audio ref={audioRef} src="/brandingkit/toyota_supra_turbo.mp3" preload="auto" />
+      <div
+        id="lights"
+        className="absolute inset-0 w-full h-full cursor-pointer"
+        ref={hyperspeed}
+      ></div>
+    </>
   );
 };
 

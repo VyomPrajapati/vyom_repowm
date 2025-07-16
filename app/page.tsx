@@ -5,7 +5,7 @@ import "./globals.css";
 // import Main from "./view/landingPage/page";
 // import ContactSection from "./view/contactus/page";
 // import Home from "./view/home/[username]/page";
-// import Main from "./view/landingPage/page";
+import Main from "./view/landingPage/page";
 // import ProductGeneration from "./view/BRANDINGKIT/PRODUCT_GENERATION/page";
 // import MockupGenerationPage from "./view/Mockupgeneration/page";
 // import NewText2Image from "./view/IMAGEGENERATIONNEW/newtexttoimage/page";
